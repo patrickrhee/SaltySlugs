@@ -7,15 +7,18 @@
 //
 
 import SpriteKit
+import UIKit
 import GameplayKit
 
 class GameScene: SKScene {
+    // Add background to the scene
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
     override func didMove(to view: SKView) {
         
+        backgroundColor = SKColor.init(red: 185/255, green: 235/255, blue: 145/255, alpha: 1.0)
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
         if let label = self.label {
