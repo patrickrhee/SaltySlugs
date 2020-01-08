@@ -11,14 +11,24 @@ import UIKit
 import GameplayKit
 
 class GameScene: SKScene {
-    // Add background to the scene
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
+    // Create our player slug character
+    private let player = SKSpriteNode(imageNamed: "player_slug");
+    
     override func didMove(to view: SKView) {
+        // Create a background color for the scene.
+        backgroundColor = SKColor.init(red: 185/255, green: 235/255, blue: 145/255, alpha: 1.0);
         
-        backgroundColor = SKColor.init(red: 185/255, green: 235/255, blue: 145/255, alpha: 1.0)
+        // set up player sprite
+        player.position = CGPoint(x:0, y: 0);
+        player.size = CGSize(width: 360, height: 250);
+        
+        // Add the player to our SKView now.
+        addChild(player);
+        
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
         if let label = self.label {
