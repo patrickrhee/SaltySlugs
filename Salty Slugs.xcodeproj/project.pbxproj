@@ -15,6 +15,7 @@
 		CD96315423C00E6A00F8CE8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD96315223C00E6A00F8CE8C /* Main.storyboard */; };
 		CD96315623C00E6B00F8CE8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD96315523C00E6B00F8CE8C /* Assets.xcassets */; };
 		CD96315923C00E6B00F8CE8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD96315723C00E6B00F8CE8C /* LaunchScreen.storyboard */; };
+		CD96316123C9AC5E00F8CE8C /* player_walk.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD96316023C9AC5E00F8CE8C /* player_walk.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		CD96315523C00E6B00F8CE8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CD96315823C00E6B00F8CE8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD96315A23C00E6B00F8CE8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD96316023C9AC5E00F8CE8C /* player_walk.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = player_walk.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		CD96314723C00E6A00F8CE8C /* Salty Slugs */ = {
 			isa = PBXGroup;
 			children = (
+				CD96316023C9AC5E00F8CE8C /* player_walk.atlas */,
 				CD96314823C00E6A00F8CE8C /* AppDelegate.swift */,
 				CD96314A23C00E6A00F8CE8C /* GameScene.sks */,
 				CD96314C23C00E6A00F8CE8C /* Actions.sks */,
@@ -132,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD96315423C00E6A00F8CE8C /* Main.storyboard in Resources */,
+				CD96316123C9AC5E00F8CE8C /* player_walk.atlas in Resources */,
 				CD96314B23C00E6A00F8CE8C /* GameScene.sks in Resources */,
 				CD96315623C00E6B00F8CE8C /* Assets.xcassets in Resources */,
 				CD96315923C00E6B00F8CE8C /* LaunchScreen.storyboard in Resources */,
