@@ -10,7 +10,7 @@ import SpriteKit
 import UIKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene{
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
@@ -50,8 +50,11 @@ class GameScene: SKScene {
         }
     }
     
+    private var touchPos : CGPoint?
+    
     
     func touchDown(atPoint pos : CGPoint) {
+        touchPos = pos;
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.green
@@ -60,6 +63,7 @@ class GameScene: SKScene {
     }
     
     func touchMoved(toPoint pos : CGPoint) {
+        touchPos = pos;
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.blue
@@ -95,8 +99,31 @@ class GameScene: SKScene {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
-    
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        // move the player's position towards x and y direction by 2 everytime touchMoved fires.
+        if(touchPos != nil && touchPos != player.position)
+        {
+            let xDiff = touchPos!.x - player.position.x;
+            let yDiff = touchPos!.y - player.position.y;
+            let sqrtCounter : CGFloat = 2/(sqrt((xDiff*xDiff)+(yDiff*yDiff)));
+            if(xDiff < -2)
+            {
+                player.position.x += (xDiff * sqrtCounter);
+            }
+            else if(xDiff > 2)
+            {
+                player.position.x += (xDiff * sqrtCounter);
+            }
+            
+            if(yDiff < -2)
+            {
+                player.position.y += (yDiff * sqrtCounter);
+            }
+            else if(yDiff > 2)
+            {
+                player.position.y += (yDiff * sqrtCounter);
+            }
+        }
     }
 }
