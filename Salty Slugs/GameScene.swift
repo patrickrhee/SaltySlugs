@@ -25,6 +25,9 @@ class GameScene: SKScene{
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
+    // Create a camera to follow our slug player
+    private var cam = SKCameraNode();
+    
     // Create our player slug character
     private var player = SKSpriteNode();
     private var playerWalkFrames : [SKTexture] = [];
@@ -138,6 +141,9 @@ class GameScene: SKScene{
         // Create a background color for the scene.
         backgroundColor = SKColor.init(red: 185/255, green: 235/255, blue: 145/255, alpha: 1.0);
         
+        // Make "cam" the camera for our skScene
+        self.camera = cam;
+        
         // Set player slug sprite in scene
         buildPlayerSlug();
         
@@ -243,5 +249,6 @@ class GameScene: SKScene{
                 }
             }
         }
+        cam.position = player.position;
     }
 }
