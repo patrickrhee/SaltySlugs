@@ -77,20 +77,61 @@ class GameScene: SKScene{
         // a new one.
     }
     
-    // Return a random double for falling salt speed
-    func randomTimeInterval() -> Double
-    {
-        return Double.random(in: 0.7...4);
-    }
-    
     // Creates the particle of salt to rain on slug character
-    func createSaltParticle()
+    func initializeSaltParticle()
     {
         saltParticle = SKSpriteNode(texture: SKTexture(imageNamed: "salt_static"));
         saltParticle.size = CGSize(width:100, height: 100);
-        saltParticle.position = CGPoint(x:0, y:300);
-        saltParticle.run(SKAction.moveBy(x: 0, y: 300, duration: randomTimeInterval()));
-        addChild(saltParticle);
+        saltParticle.position = CGPoint(x:0, y:0);
+        
+        // Create sequence of SKActions for salt particle to follow whenever spawned.
+        saltParticle.run(SKAction.sequence([
+            SKAction.moveBy(x: 0, y: -500, duration: 3),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.removeFromParent()
+        ]));
+    }
+    
+    func startSaltRain()
+    {
+        let createSaltGrain = SKAction.run {
+            // Create a copy of salt particle
+            let saltGrain = self.saltParticle.copy() as! SKSpriteNode;
+            // Place salt grain in random place near the player.
+            var randomCGFloatY = CGFloat.random(in: -200 ... 400);
+            if(randomCGFloatY > -130 && randomCGFloatY < 0)
+            {
+                randomCGFloatY -= 130;
+            }
+            else if(randomCGFloatY < 130 && randomCGFloatY >= 0)
+            {
+                randomCGFloatY += 130;
+            }
+            var randomCGFloatX = CGFloat.random(in: -400 ... 400);
+            if(randomCGFloatX > -100 && randomCGFloatX < 0)
+            {
+                randomCGFloatX -= 100;
+            }
+            else if(randomCGFloatX < 100 && randomCGFloatX >= 0)
+            {
+                randomCGFloatX += 100;
+            }
+            self.saltParticle.position = CGPoint(x:self.player.position.x+randomCGFloatX, y:self.player.position.y+randomCGFloatY);
+            // Add the salt particle into scene
+            self.addChild(saltGrain);
+        }
+        // Wait for a certain (possibly random) amount of time before next salt grain falls.
+        let wait = SKAction.wait(forDuration: 1.0);
+        // Combine all of this stuff into a sequence
+        let saltGenerationSequence = SKAction.sequence([createSaltGrain,wait]);
+        // Run the salt spawning action sequence forever.
+        run(SKAction.repeatForever(saltGenerationSequence), withKey: "saltRainLoop");
+    }
+    
+    func stopSaltRain()
+    {
+        // Remove the forever running function with key "saltRainLoop"
+        removeAction(forKey: "saltRainLoop");
     }
     
     override func didMove(to view: SKView) {
@@ -113,7 +154,9 @@ class GameScene: SKScene{
                                               SKAction.removeFromParent()]))
         }
         
-        createSaltParticle();
+        // Initialize salt particle so we can create copies of it.
+        initializeSaltParticle();
+        startSaltRain();
     }
     
     func touchDown(atPoint pos : CGPoint) {
