@@ -10,6 +10,16 @@ import SpriteKit
 import UIKit
 import GameplayKit
 
+extension SKSpriteNode {
+    func drawBorder(color: UIColor, width: CGFloat) {
+        let shapeNode = SKShapeNode(rect: frame)
+        shapeNode.fillColor = .clear
+        shapeNode.strokeColor = color
+        shapeNode.lineWidth = width
+        addChild(shapeNode)
+    }
+}
+
 class GameScene: SKScene{
     
     private var label : SKLabelNode?
@@ -18,6 +28,9 @@ class GameScene: SKScene{
     // Create our player slug character
     private var player = SKSpriteNode();
     private var playerWalkFrames : [SKTexture] = [];
+    
+    // Create our salt particle
+    private var saltParticle = SKSpriteNode();
     
     // Keep track of last touch position for player slug to go to.
     private var touchPos : CGPoint?
@@ -64,22 +77,52 @@ class GameScene: SKScene{
         // a new one.
     }
     
+    // Return a random double for falling salt speed
+    func randomTimeInterval() -> Double
+    {
+        return Double.random(in: 0.7...4);
+    }
+    
+    // Creates the particle of salt to rain on slug character
+    func createSaltParticle()
+    {
+        saltParticle = SKSpriteNode(texture: SKTexture(imageNamed: "salt_static"));
+        saltParticle.size = CGSize(width:100, height: 100);
+        saltParticle.position = CGPoint(x:0, y:300);
+        saltParticle.run(SKAction.moveBy(x: 0, y: 300, duration: randomTimeInterval()));
+        addChild(saltParticle);
+    }
+    
     override func didMove(to view: SKView) {
         // Create a background color for the scene.
         backgroundColor = SKColor.init(red: 185/255, green: 235/255, blue: 145/255, alpha: 1.0);
         
         // Set player slug sprite in scene
         buildPlayerSlug();
+        
+        // Create shape node to use during mouse interaction
+        let w = (self.size.width + self.size.height) * 0.05
+        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        
+        if let spinnyNode = self.spinnyNode {
+            spinnyNode.lineWidth = 2.5
+            
+            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
+            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
+                                              SKAction.fadeOut(withDuration: 0.5),
+                                              SKAction.removeFromParent()]))
+        }
+        
+        createSaltParticle();
     }
     
     func touchDown(atPoint pos : CGPoint) {
         touchPos = pos;
-        /*
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.green
             self.addChild(n)
-        }*/
+        }
     }
     
     func touchMoved(toPoint pos : CGPoint) {
@@ -90,9 +133,9 @@ class GameScene: SKScene{
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        /*if let label = self.label {
+        if let label = self.label {
             label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }*/
+        }
         
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
